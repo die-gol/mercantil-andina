@@ -1,5 +1,11 @@
 # MercantilAndina
 
+## Prerequisites
+
+* node v14.17.0 --> https://nodejs.org/en/
+* npm 6.14.13 --> npm i npm@6.14.13 -g
+* Angular CLI: 12.0.0 --> npm i @angular/cli@12.0.0
+* Paquetes varios --> npm install
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.0.0.
 
 ## Development server
