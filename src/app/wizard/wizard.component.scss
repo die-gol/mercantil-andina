@@ -1,0 +1,25 @@
+.mat-stepper-horizontal {
+    margin-top: 8px;
+  }
+  
+  .mat-form-field {
+    margin-top: 16px;
+  }
+
+  .text-danger{
+    color: #f44336;
+  }
+
+  .mobileVisible{
+    display: none;
+  }
+
+  @media only screen and (max-width: 600px) {
+    .mobileHiden {
+      display: none;
+    }
+    .mobileVisible{
+      display: inline-block;
+    }
+  }
+  

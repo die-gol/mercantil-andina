@@ -1,0 +1,335 @@
+<!--
+<button mat-raised-button (click)="isEditable = !isEditable">
+    {{!isEditable ? 'Enable edit mode' : 'Disable edit mode'}}
+  </button>
+-->
+  <ng-container [ngSwitch]="stepperOrientation | async">
+    <div *ngSwitchCase="'horizontal'"></div>
+    <div *ngSwitchCase="'vertical'"></div>
+  </ng-container>
+  
+  <mat-stepper
+  class="example-stepper"
+  [orientation]="(stepperOrientation | async)!"
+  #stepper
+  [linear]="isLinear"
+  (selectionChange)="next($event)">
+  <ng-template matStepperIcon="edit">
+    <mat-icon>done</mat-icon>
+  </ng-template>
+  <!--
+  <mat-vertical-stepper linear #stepper (selectionChange)="next($event)">
+    -->
+  <!-- #docregion editable -->
+    <mat-step [stepControl]="firstFormGroup">
+  <!-- #enddocregion editable -->
+      <form [formGroup]="firstFormGroup">
+  <!-- #docregion step-label -->
+        <ng-template matStepLabel>Datos personales</ng-template>
+  <!-- #enddocregion step-label -->
+        <mat-form-field>
+          <mat-label>DNI</mat-label>
+          <input matInput maxlength="8" minlength="7" formControlName="dni" placeholder="DNI" required (keypress)="numberOnly($event)">
+          <small *ngIf="f.dni.invalid && (f.dni.dirty || f.dni.touched)"
+              class="text-danger">
+            <small *ngIf="f.dni.errors?.required">
+              El dni es obligatorio.
+            </small>
+            <small *ngIf="f.dni.errors?.maxlength">
+              El apellido no puede contener más de 8 números.
+            </small>
+            <small *ngIf="f.dni.errors?.minlength">
+              El dni no puede contener menos de 7 números.
+            </small>
+          </small>
+        </mat-form-field>  
+        <mat-form-field>  
+          <mat-label>Nombre</mat-label>
+          <input matInput formControlName="name" placeholder="Nombre" required maxlength="15" minlength="2" (keypress)="lettersOnly($event)">
+          <small *ngIf="f.name.invalid && (f.name.dirty || f.name.touched)"
+              class="text-danger">
+            <small *ngIf="f.name.errors?.required">
+              El nombre es obligatorio.
+            </small>
+            <small *ngIf="f.name.errors?.maxlength">
+              El nombre no puede contener más de 15 caracteres.
+            </small>
+            <small *ngIf="f.name.errors?.minlength">
+              El nombre no puede contener menos de 2 caracteres.
+            </small>
+          </small>
+        </mat-form-field>  
+        <mat-form-field>  
+          <mat-label>Apellido</mat-label>
+          <input matInput formControlName="lastName" placeholder="Apellido" required maxlength="15" minlength="2" (keypress)="lettersOnly($event)">
+          
+          <small *ngIf="f.lastName.invalid && (f.lastName.dirty || f.lastName.touched)"
+              class="text-danger">
+            <small *ngIf="f.lastName.errors?.required">
+              El apellido es obligatorio.
+            </small>
+            <small *ngIf="f.lastName.errors?.maxlength">
+              El apellido no puede contener más de 15 caracteres.
+            </small>
+            <small *ngIf="f.lastName.errors?.minlength">
+              El apellido no puede contener menos de 2 caracteres.
+            </small>
+          </small>
+          
+        </mat-form-field>  
+        <mat-form-field>  
+          <mat-label>E-mail</mat-label>
+          <input matInput type="email" formControlName="mail" placeholder="E-mail" required>
+          
+          <small *ngIf="f.mail.invalid && (f.mail.dirty || f.mail.touched)"
+                  class="text-danger">
+            <small *ngIf="f.mail.errors?.required">
+              El E-mail es obligatorio.
+            </small>
+            <small *ngIf="f.mail.errors?.email">
+              El E-mail no es válido.
+            </small>
+            <small *ngIf="f.mail.errors?.pattern">
+              El E-mail no tiene un formato válido.
+            </small>
+          </small>        
+        </mat-form-field>  
+        <mat-form-field>  
+          <mat-label>Teléfono</mat-label>
+          <input matInput mask="0000-0000" formControlName="phone" placeholder="Teléfono">
+        </mat-form-field>  
+        <mat-form-field>  
+          <mat-label>Celular</mat-label>
+          <input matInput mask="00 0000-0000" formControlName="mobile" placeholder="Celular">
+        </mat-form-field>  
+
+        <mat-form-field class="example-full-width" appearance="fill">
+          <mat-label>Fecha de nacimiento</mat-label>
+          <input matInput  [min]="minDate" [max]="maxDate" [matDatepicker]="picker" formControlName="date">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <small *ngIf="f.date.invalid && (f.date.dirty || f.date.touched)"
+                  class="text-danger">
+            <small *ngIf="f.date.errors?.required">
+              La fecha de nacimiento es obligatoria.
+            </small>
+          </small>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-select placeholder="Provincia" formControlName="selectedPID" #provinciaValue (selectionChange)="changeProvincia($event.value)" required>
+            <mat-option *ngFor="let provincia of provinciasArray" [value]="provincia['id']" > 
+              {{ provincia['nombre'] }}
+            </mat-option>
+          </mat-select>
+          <small *ngIf="f.selectedPID.invalid && (f.selectedPID.dirty || f.selectedPID.touched)"
+                  class="text-danger">
+            <small *ngIf="f.selectedPID.errors?.required">
+              La provincia es obligatoria.
+            </small>
+          </small>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-select placeholder="Municipio" formControlName="selectedMID" #municipioValue required>
+            <mat-option *ngFor="let municipio of municipiosArray" [value]="municipio['id']"> 
+              {{ municipio['nombre'] }}
+            </mat-option>
+          </mat-select>
+          <small *ngIf="f.selectedMID.invalid && (f.selectedMID.dirty || f.selectedMID.touched)"
+                  class="text-danger">
+            <small *ngIf="f.selectedMID.errors?.required">
+              El municipio es obligatorio.
+            </small>
+          </small>
+        </mat-form-field>
+          
+        <mat-form-field>  
+          <mat-label>Domicilio</mat-label>
+          <input matInput formControlName="address" placeholder="Domicilio" required>
+          <small *ngIf="f.address.invalid && (f.address.dirty || f.address.touched)"
+                  class="text-danger">
+            <small *ngIf="f.address.errors?.required">
+              El domicilio es obligatorio.
+            </small>
+          </small>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Usuario</mat-label>
+          <input matInput formControlName="user" placeholder="Usuario" required maxlength="30" minlength="3">
+          <small *ngIf="f.user.invalid && (f.user.dirty || f.user.touched)"
+                  class="text-danger">
+            <small *ngIf="f.user.errors?.required">
+              El usuario es obligatorio.
+            </small>
+            
+            <small *ngIf="f.user.errors?.exists">
+              El usuario ya existe.
+            </small>
+            
+          </small>
+        </mat-form-field>  
+        <mat-form-field>  
+          <mat-label>Contraseña</mat-label>
+          <input matInput type="password" formControlName="password" placeholder="Contraseña" required>
+          <small *ngIf="f.password.invalid && (f.password.dirty || f.password.touched)"
+                  class="text-danger">
+            <small *ngIf="f.password.errors?.required">
+              La contrseña es obligatoria.
+            </small>
+            <small *ngIf="f.password.errors?.pattern">
+              La contraseña debe contener Al menos 8 caracteres de longitud, letras minusculas, letras mayúsculas, números y caracteres especiales.
+            </small>
+          </small>
+        </mat-form-field>
+        <div>
+          <!--
+          <button mat-button matStepperNext>Next</button>
+        -->
+          <button mat-button (click)="onNext()">Siguiente</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="secondFormGroup" [editable]="isEditable">
+      <form [formGroup]="secondFormGroup">
+        <ng-template matStepLabel>Datos de su vehiculo</ng-template>
+
+        <mat-form-field>
+          <mat-select placeholder="Marca" formControlName="brand" #brandValue (selectionChange)="changeMarca($event.value)" required>
+            <mat-option *ngFor="let brand of brandsArray" [value]="brand['codigo']"> 
+              {{ brand['desc'] }}
+            </mat-option>
+          </mat-select>
+          <small *ngIf="s.brand.invalid && (s.brand.dirty || s.brand.touched)"
+                  class="text-danger">
+            <small *ngIf="s.brand.errors?.required">
+              La marca es obligatoria.
+            </small>
+          </small>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-select placeholder="Año" formControlName="year" (selectionChange)="changeYear($event.value)" required>
+            <mat-option *ngFor="let year of last20Years" [value]="year"> 
+              {{ year }}
+            </mat-option>
+          </mat-select>
+          <small *ngIf="s.year.invalid && (s.year.dirty || s.year.touched)"
+                  class="text-danger">
+            <small *ngIf="s.year.errors?.required">
+              La marca es obligatoria.
+            </small>
+          </small>
+        </mat-form-field>
+        
+        <mat-form-field>
+          <mat-select placeholder="Modelo" formControlName="model" #modelValue (selectionChange)="changeModel($event.value)" required>
+            <mat-option *ngFor="let model of modelsArray" [value]="model"> 
+              {{ model }}
+            </mat-option>
+          </mat-select>
+          <small *ngIf="s.model.invalid && (s.model.dirty || s.model.touched)"
+                  class="text-danger">
+            <small *ngIf="s.model.errors?.required">
+              El modelo es obligatorio.
+            </small>
+          </small>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-select placeholder="Version" formControlName="version" #versionValue>
+            <mat-option *ngFor="let version of versionsArray" [value]="version['codigo']"> 
+              {{ version['desc'] }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        
+        <div>
+          <button mat-button matStepperPrevious>Volver</button>
+          <button mat-button matStepperNext>Siguiente</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="thirdFormGroup" [editable]="isEditable">
+      <form [formGroup]="thirdFormGroup">
+        <ng-template matStepLabel>Coberturas disponibles</ng-template>
+ 
+        <mat-selection-list #coverage (selectionChange)="onGroupsChange(coverage.selectedOptions.selected)">
+          <mat-list-option *ngFor="let coverage of coverageArray | orderBy: score" [value]="coverage">
+            <mat-card>
+              <mat-card-content>
+               <b>{{coverage['titulo']}}</b> <br class="mobileVisible"> Costo: ${{coverage['costo']}} <span class="mobileHiden">- Puntaje: {{coverage['puntaje']}} - Franquicia: ${{coverage['franquicia']}} </span> <br>
+                <small class="mobileHiden">{{coverage['descripcion']}}</small> <br> 
+                
+              </mat-card-content>
+   
+            </mat-card>  
+          </mat-list-option>
+        </mat-selection-list>
+
+        
+        <div>
+          <button mat-button matStepperPrevious>Volver</button>
+          <button mat-button matStepperNext>Siguiente</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step>
+      <ng-template matStepLabel>Resumen</ng-template>
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="row col-lg-12">
+              <div class="col-lg-4 col-sm-12 col-xs-12">
+                <h4>Daton personales</h4> <br>
+                <p>nombre y apellido: {{entity.nombre}} {{entity.apellido}}</p>
+                <p>DNI: {{entity.dni}} </p>
+                <p>Teléfono: {{entity.telefono}} </p>
+                <p>celular: {{entity.celular}} </p>
+                <p>Usuario: {{entity.usuario}} </p>
+                <p>Provincia: {{entity.location?.provincia}} </p>
+                <p>Ciudad: {{entity.location?.ciudad}} </p>
+                <p>Domicilio: {{entity.location?.domicilio}} </p>
+                <p>Nacimiento: {{entity.nacimiento | date: 'dd/MM/yyyy'}} </p> 
+              </div>
+              <div class="col-lg-4 col-sm-12 col-xs-12">
+                <h4>Datos del vehiculo</h4> <br>
+                <p>Marca: {{entity.vehiculo?.marca}} </p>
+                <p>Modelo: {{entity.vehiculo?.modelo}} </p>
+                <p>Año: {{entity.vehiculo?.ano}} </p>
+                <p>Version: {{entity.vehiculo?.version}} </p>
+              </div>
+              <div class="col-lg-4 col-sm-12 col-xs-12">
+                <h4>Cobertura</h4> <br>
+                <p>{{entity.cobertura?.titulo}} </p>
+                <p>{{entity.cobertura?.texto}} </p>
+                <p>{{entity.cobertura?.descripcion}} </p>
+                <p>Número: {{entity.cobertura?.numero}} </p>
+                <p>Producto: {{entity.cobertura?.producto}} </p>
+                <p>Código Producto: {{entity.cobertura?.codigoProducto}} </p>
+                <p>costo: ${{entity.cobertura?.costo}} </p>
+                <p>franquicia: ${{entity.cobertura?.franquicia}} </p>
+                <p>puntaje: {{entity.cobertura?.puntaje}} </p>
+              </div>
+            </div> 
+          </div>
+        </div>
+      </div>  
+      <div>
+        <button mat-button matStepperPrevious>Volver</button>
+        <button mat-button (click)="stepper.reset()">Modificar</button>
+        <button mat-button (click)="enviar()">Enviar</button>
+      </div>
+    </mat-step>
+  </mat-stepper>
+  <!--  
+  </mat-vertical-stepper>
+  -->
+
+  
+  <!-- Copyright 2021 Google LLC. All Rights Reserved.
+      Use of this source code is governed by an MIT-style license that
+      can be found in the LICENSE file at http://angular.io/license -->
