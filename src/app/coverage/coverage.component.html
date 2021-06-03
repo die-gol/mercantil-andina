@@ -1,0 +1,26 @@
+<form [formGroup]="thirdFormGroup">
+    <mat-selection-list #coverage (selectionChange)="onGroupsChange(coverage.selectedOptions.selected)">
+        <mat-list-option *ngFor="let coverage of coverageArray | orderBy: score" [value]="coverage">
+          <mat-card>
+            <mat-card-content>
+             <b>{{coverage['titulo']}}</b> <br class="mobileVisible"> Costo: ${{coverage['costo']}} <span class="mobileHiden">- Puntaje: {{coverage['puntaje']}} - Franquicia: ${{coverage['franquicia']}} </span> <br>
+              <small class="mobileHiden">{{coverage['descripcion']}}</small> <br> 
+              
+            </mat-card-content>
+ 
+          </mat-card>  
+        </mat-list-option>
+      </mat-selection-list>
+
+      
+      <div>
+        <div class="row col-lg-12 pt1 pt19Mb">
+          <div class="col-lg-1 col-sm-12 pb1Mb">
+            <button mat-button matStepperPrevious class="back-button w100Mb">Volver</button>
+          </div>
+          <div class="col-lg-1 col-sm-12">
+            <button mat-button (click)="onNextThirdForm()" class="next-button w100Mb">Siguiente</button>
+          </div>
+        </div> 
+      </div>
+    </form>

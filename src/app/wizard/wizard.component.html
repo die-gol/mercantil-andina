@@ -187,11 +187,12 @@
           <!--
           <button mat-button matStepperNext>Next</button>
         -->
-          <button mat-button (click)="onNext()">Siguiente</button>
+
+          <button mat-button (click)="onNextFirstForm()">Siguiente</button>
         </div>
       </form>
     </mat-step>
-    <mat-step [stepControl]="secondFormGroup" [editable]="isEditable">
+    <mat-step [stepControl]="secondFormGroup" >
       <form [formGroup]="secondFormGroup">
         <ng-template matStepLabel>Datos de su vehiculo</ng-template>
 
@@ -247,12 +248,15 @@
         
         <div>
           <button mat-button matStepperPrevious>Volver</button>
+          <!--
           <button mat-button matStepperNext>Siguiente</button>
+          -->
+          <button mat-button (click)="onNextSecondForm()">Siguiente</button>
         </div>
       </form>
     </mat-step>
 
-    <mat-step [stepControl]="thirdFormGroup" [editable]="isEditable">
+    <mat-step [stepControl]="thirdFormGroup" >
       <form [formGroup]="thirdFormGroup">
         <ng-template matStepLabel>Coberturas disponibles</ng-template>
  
@@ -271,8 +275,16 @@
 
         
         <div>
+          
           <button mat-button matStepperPrevious>Volver</button>
+          <!--
+          <button mat-button (click)="goBack(stepper)" type="button">Back</button>
+          -->
+          <!--
           <button mat-button matStepperNext>Siguiente</button>
+          -->
+          <button mat-button (click)="onNextThirdForm()">Siguiente</button>
+
         </div>
       </form>
     </mat-step>

@@ -57,11 +57,23 @@ import { NgxMaskModule } from 'ngx-mask';
 import { ToastrModule } from 'ngx-toastr';
 import { OrderModule } from 'ngx-order-pipe';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { PersonalInfoComponent } from './personal-info/personal-info.component';
+import { WiComponent } from './wi/wi.component';
+import { VehicleDataComponent } from './vehicle-data/vehicle-data.component';
+import { CoverageComponent } from './coverage/coverage.component';
+import { HeaderComponent } from './header/header.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    WizardComponent
+    WizardComponent,
+    PersonalInfoComponent,
+    WiComponent,
+    VehicleDataComponent,
+    CoverageComponent,
+    HeaderComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

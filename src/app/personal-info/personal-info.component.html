@@ -1,0 +1,166 @@
+<form [formGroup]="firstFormGroup">
+    <mat-form-field>
+        <mat-label>DNI</mat-label>
+        <input matInput maxlength="8" minlength="7" formControlName="dni" placeholder="DNI" required (keypress)="numberOnly($event)">
+        <small *ngIf="f.dni.invalid && (f.dni.dirty || f.dni.touched)"
+            class="text-danger">
+          <small *ngIf="f.dni.errors?.required">
+            El dni es obligatorio.
+          </small>
+          <small *ngIf="f.dni.errors?.maxlength">
+            El apellido no puede contener más de 8 números.
+          </small>
+          <small *ngIf="f.dni.errors?.minlength">
+            El dni no puede contener menos de 7 números.
+          </small>
+        </small>
+      </mat-form-field>  
+      <mat-form-field>  
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="name" placeholder="Nombre" required maxlength="15" minlength="2" (keypress)="lettersOnly($event)">
+        <small *ngIf="f.name.invalid && (f.name.dirty || f.name.touched)"
+            class="text-danger">
+          <small *ngIf="f.name.errors?.required">
+            El nombre es obligatorio.
+          </small>
+          <small *ngIf="f.name.errors?.maxlength">
+            El nombre no puede contener más de 15 caracteres.
+          </small>
+          <small *ngIf="f.name.errors?.minlength">
+            El nombre no puede contener menos de 2 caracteres.
+          </small>
+        </small>
+      </mat-form-field>  
+      <mat-form-field>  
+        <mat-label>Apellido</mat-label>
+        <input matInput formControlName="lastName" placeholder="Apellido" required maxlength="15" minlength="2" (keypress)="lettersOnly($event)">
+        
+        <small *ngIf="f.lastName.invalid && (f.lastName.dirty || f.lastName.touched)"
+            class="text-danger">
+          <small *ngIf="f.lastName.errors?.required">
+            El apellido es obligatorio.
+          </small>
+          <small *ngIf="f.lastName.errors?.maxlength">
+            El apellido no puede contener más de 15 caracteres.
+          </small>
+          <small *ngIf="f.lastName.errors?.minlength">
+            El apellido no puede contener menos de 2 caracteres.
+          </small>
+        </small>
+        
+      </mat-form-field>  
+      <mat-form-field>  
+        <mat-label>E-mail</mat-label>
+        <input matInput type="email" formControlName="mail" placeholder="E-mail" required>
+        
+        <small *ngIf="f.mail.invalid && (f.mail.dirty || f.mail.touched)"
+                class="text-danger">
+          <small *ngIf="f.mail.errors?.required">
+            El E-mail es obligatorio.
+          </small>
+          <small *ngIf="f.mail.errors?.email">
+            El E-mail no es válido.
+          </small>
+          <small *ngIf="f.mail.errors?.pattern">
+            El E-mail no tiene un formato válido.
+          </small>
+        </small>        
+      </mat-form-field>  
+      <mat-form-field>  
+        <mat-label>Teléfono</mat-label>
+        <input matInput mask="0000-0000" formControlName="phone" placeholder="Teléfono">
+      </mat-form-field>  
+      <mat-form-field>  
+        <mat-label>Celular</mat-label>
+        <input matInput mask="00 0000-0000" formControlName="mobile" placeholder="Celular">
+      </mat-form-field>  
+
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Fecha de nacimiento</mat-label>
+        <input matInput  [min]="minDate" [max]="maxDate" [matDatepicker]="picker" formControlName="date">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <small *ngIf="f.date.invalid && (f.date.dirty || f.date.touched)"
+                class="text-danger">
+          <small *ngIf="f.date.errors?.required">
+            La fecha de nacimiento es obligatoria.
+          </small>
+        </small>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-select placeholder="Provincia" formControlName="selectedPID" #provinciaValue (selectionChange)="changeProvincia($event.value)" required>
+          <mat-option *ngFor="let provincia of provinciasArray" [value]="provincia['id']" > 
+            {{ provincia['nombre'] }}
+          </mat-option>
+        </mat-select>
+        <small *ngIf="f.selectedPID.invalid && (f.selectedPID.dirty || f.selectedPID.touched)"
+                class="text-danger">
+          <small *ngIf="f.selectedPID.errors?.required">
+            La provincia es obligatoria.
+          </small>
+        </small>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-select placeholder="Municipio" formControlName="selectedMID" #municipioValue required>
+          <mat-option *ngFor="let municipio of municipiosArray" [value]="municipio['id']"> 
+            {{ municipio['nombre'] }}
+          </mat-option>
+        </mat-select>
+        <small *ngIf="f.selectedMID.invalid && (f.selectedMID.dirty || f.selectedMID.touched)"
+                class="text-danger">
+          <small *ngIf="f.selectedMID.errors?.required">
+            El municipio es obligatorio.
+          </small>
+        </small>
+      </mat-form-field>
+        
+      <mat-form-field>  
+        <mat-label>Domicilio</mat-label>
+        <input matInput formControlName="address" placeholder="Domicilio" required>
+        <small *ngIf="f.address.invalid && (f.address.dirty || f.address.touched)"
+                class="text-danger">
+          <small *ngIf="f.address.errors?.required">
+            El domicilio es obligatorio.
+          </small>
+        </small>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Usuario</mat-label>
+        <input matInput formControlName="user" placeholder="Usuario" required maxlength="30" minlength="3">
+        <small *ngIf="f.user.invalid && (f.user.dirty || f.user.touched)"
+                class="text-danger">
+          <small *ngIf="f.user.errors?.required">
+            El usuario es obligatorio.
+          </small>
+          
+          <small *ngIf="f.user.errors?.exist">
+            El usuario ya existe.
+          </small>
+          
+        </small>
+      </mat-form-field>  
+      <mat-form-field>  
+        <mat-label>Contraseña</mat-label>
+        <input matInput type="password" formControlName="password" placeholder="Contraseña" required>
+        <small *ngIf="f.password.invalid && (f.password.dirty || f.password.touched)"
+                class="text-danger">
+          <small *ngIf="f.password.errors?.required">
+            La contrseña es obligatoria.
+          </small>
+          <small *ngIf="f.password.errors?.pattern">
+            La contraseña debe contener Al menos 8 caracteres de longitud, letras minusculas, letras mayúsculas, números y caracteres especiales.
+          </small>
+        </small>
+      </mat-form-field>
+      
+      <div>
+        <!--
+        <button mat-button matStepperNext>Next</button>
+      -->
+
+        <button mat-button (click)="onNextFirstForm()" class="next-button">Siguiente</button>
+      </div>
+    </form>

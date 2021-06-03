@@ -10,6 +10,7 @@ import { IUser } from './models/user.model';
 import { CommonService } from './wizard.service';
 import {map, switchMap} from 'rxjs/operators';
 import {formatDate} from '@angular/common';
+import { MatStepper } from '@angular/material/stepper';
 
 /*
 export class ValidateUserNotTaken {
@@ -267,46 +268,36 @@ export class WizardComponent implements OnInit {
     });
   }
 
-  onNext() {
-    if (this.validate()) {
+  onNextFirstForm() {
+    if (this.firstFormGroup.valid) {
         this.stepper.next();
     }
   }
 
-  validate() {
-		let errors: string | any[] = [];
-
-		for (let i in this.firstFormGroup.controls)
-			this.firstFormGroup.controls[i].markAsTouched();
-    
-		for (let i in this.secondFormGroup.controls)
-      this.secondFormGroup.controls[i].markAsTouched();  
-
-    for (let i in this.thirdFormGroup.controls)
-      this.thirdFormGroup.controls[i].markAsTouched();    
-
-		if (errors.length > 0)
-			this.showErrorList(errors, "Error");
-
-		return errors.length == 0;
-	}
-  showErrorList(messages: string[], title: string = 'Error') {
-    messages.forEach(element => {
-        setTimeout(() => this.toastr.error(element, title));
-    });
+  onNextSecondForm() {
+    if (this.secondFormGroup.valid) {
+        this.stepper.next();
+    }
   }
+
+  onNextThirdForm() {
+    if (this.coverageSelected && this.coverageSelected?.length > 0) 
+        this.stepper.next();
+    else
+      this.toastr.error('Debe seleccionar una cobertura');  
+  }
+
   onGroupsChange(options: MatListOption[]) {
     // map these MatListOptions to their values
     this.coverageSelected = options.map(o => o.value);
-    console.log(this.coverageSelected);
-    console.log(this.coverageSelected.length);
-    console.log(this.coverageSelected[0]);
     this.setEntityStep3(this.coverageSelected[0]);
-  }
+  } 
 
   enviar(){
-    console.log('enviar');
-    this.toastr.success('Enviado correctamente');
+    if(this.firstFormGroup.valid && this.secondFormGroup.valid && this.coverageSelected && this.coverageSelected?.length > 0)
+      this.toastr.success('Enviado correctamente');
+    else  
+    this.toastr.error('Debe completar los campos obligatorios');
   }
   
 }

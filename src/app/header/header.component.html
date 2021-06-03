@@ -1,0 +1,26 @@
+<header>
+  <h1 class="ts">Esta página es responsiva</h1>
+</header>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-nav">
+  <a class="navbar-brand" href="#">Home</a>
+
+  <button class="navbar-toggler navbar-toggler-right" type="button" aria-controls="appNavigation" aria-expanded="!isCollapsed" aria-label="Toggle navigation" (click)="toggleMenu()">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="appNavigation" [ngbCollapse]="isCollapsed">
+    <div class="navbar-nav mr-auto">
+      <a (click)="toggleMenu()" class="nav-item nav-link" routerLink="" routerLinkActive="active">Nosotros</a>
+
+      <div class="nav-item dropdown" ngbDropdown >
+        <a class="nav-link dropdown-toggle" id="dropdownSede" ngbDropdownToggle>Sedes</a>
+        <div class="dropdown-menu" ngbDropdownMenu aria-labelledby="dropdownSede">
+          <a class="dropdown-item" routerLink="/sede-show" routerLinkActive="active" (click)="toggleMenu()">Sede 1</a>
+          <a class="dropdown-item" routerLink="/sede-admin" routerLinkActive="active" (click)="toggleMenu()">Sede 2</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+

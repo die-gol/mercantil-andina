@@ -1,0 +1,59 @@
+<form [formGroup]="secondFormGroup">
+    <mat-form-field>
+        <mat-select placeholder="Marca" formControlName="brand" #brandValue (selectionChange)="changeMarca($event.value)" required>
+          <mat-option *ngFor="let brand of brandsArray" [value]="brand['codigo']"> 
+            {{ brand['desc'] }}
+          </mat-option>
+        </mat-select>
+        <small *ngIf="s.brand.invalid && (s.brand.dirty || s.brand.touched)"
+                class="text-danger">
+          <small *ngIf="s.brand.errors?.required">
+            La marca es obligatoria.
+          </small>
+        </small>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-select placeholder="Año" formControlName="year" (selectionChange)="changeYear($event.value)" required>
+          <mat-option *ngFor="let year of last20Years" [value]="year"> 
+            {{ year }}
+          </mat-option>
+        </mat-select>
+        <small *ngIf="s.year.invalid && (s.year.dirty || s.year.touched)"
+                class="text-danger">
+          <small *ngIf="s.year.errors?.required">
+            La marca es obligatoria.
+          </small>
+        </small>
+      </mat-form-field>
+      
+      <mat-form-field>
+        <mat-select placeholder="Modelo" formControlName="model" #modelValue (selectionChange)="changeModel($event.value)" required>
+          <mat-option *ngFor="let model of modelsArray" [value]="model"> 
+            {{ model }}
+          </mat-option>
+        </mat-select>
+        <small *ngIf="s.model.invalid && (s.model.dirty || s.model.touched)"
+                class="text-danger">
+          <small *ngIf="s.model.errors?.required">
+            El modelo es obligatorio.
+          </small>
+        </small>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-select placeholder="Version" formControlName="version" #versionValue>
+          <mat-option *ngFor="let version of versionsArray" [value]="version['codigo']"> 
+            {{ version['desc'] }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div class="row col-lg-12 pt1 pt19Mb">
+        <div class="col-lg-1 col-sm-12 pb1Mb">
+          <button mat-button matStepperPrevious class="back-button w100Mb">Volver</button>
+        </div>
+        <div class="col-lg-1 col-sm-12">
+          <button mat-button (click)="onNextSecondForm()" class="next-button w100Mb">Siguiente</button>
+        </div>
+      </div>  
+    </form>

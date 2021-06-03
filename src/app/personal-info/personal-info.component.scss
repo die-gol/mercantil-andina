@@ -1,0 +1,45 @@
+.mat-stepper-horizontal {
+    margin-top: 8px;
+  }
+  
+  .mat-form-field {
+    margin-top: 16px;
+    margin-right: 1%;
+  }
+
+  .text-danger{
+    color: #f44336;
+  }
+
+  .mobileVisible{
+    display: none;
+  }
+
+  :host ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex{
+    background-color: white !important;
+  }
+
+  @mixin button {
+    padding: 0;
+    border: none;
+    font-family: 'Patua One', cursive;
+    color: white;
+    background-color: transparent;
+    cursor: pointer;
+  }
+  
+  .next-button {
+    @include button;
+    padding: 10px;
+    background-color: skyblue;
+  }
+
+  @media only screen and (max-width: 600px) {
+    .mobileHiden {
+      display: none;
+    }
+    .mobileVisible{
+      display: inline-block;
+    }
+  }
+  

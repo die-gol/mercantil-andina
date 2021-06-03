@@ -1,0 +1,103 @@
+<!--
+<button mat-raised-button (click)="isEditable = !isEditable">
+    {{!isEditable ? 'Enable edit mode' : 'Disable edit mode'}}
+  </button>
+-->
+<ng-container [ngSwitch]="stepperOrientation | async">
+    <div *ngSwitchCase="'horizontal'"></div>
+    <div *ngSwitchCase="'vertical'"></div>
+  </ng-container>
+  
+  <mat-stepper
+  class="example-stepper"
+  [orientation]="(stepperOrientation | async)!"
+  #stepper
+  [linear]="isLinear"
+  (selectionChange)="next($event)">
+  <ng-template matStepperIcon="edit">
+    <mat-icon>done</mat-icon>
+  </ng-template>
+    <mat-step [stepControl]="firstFormGroup">
+  <!-- #docregion step-label -->
+        <ng-template matStepLabel>Datos personales</ng-template>
+        <app-personal-info [stepper]="stepper"></app-personal-info>
+  <!-- #enddocregion step-label -->
+    </mat-step>
+    <mat-step [stepControl]="secondFormGroup" >
+        <ng-template matStepLabel>Datos de su vehiculo</ng-template>
+        <app-vehicle-data [stepper]="stepper"></app-vehicle-data>
+    </mat-step>
+
+    <mat-step [stepControl]="thirdFormGroup" >
+        <ng-template matStepLabel>Coberturas disponibles</ng-template>
+        <app-coverage [stepper]="stepper" (editedEmitter)="updateValue($event)"></app-coverage>
+    </mat-step>
+
+    <mat-step>
+      <ng-template matStepLabel>Resumen</ng-template>
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="row col-lg-12">
+              <div class="col-lg-4 col-sm-12 col-xs-12">
+                <h4>Daton personales</h4> <br>
+                <p>Nombre y Apellido: {{entity.nombre}} {{entity.apellido}}</p>
+                <p>DNI: {{entity.dni}} </p>
+                <p>Teléfono: {{entity.telefono}} </p>
+                <p>celular: {{entity.celular}} </p>
+                <p>Usuario: {{entity.usuario}} </p>
+                <p>Provincia: {{entity.location?.provincia}} </p>
+                <p>Ciudad: {{entity.location?.ciudad}} </p>
+                <p>Domicilio: {{entity.location?.domicilio}} </p>
+                <p>Nacimiento: {{entity.nacimiento | date: 'dd/MM/yyyy'}} </p> 
+              </div>
+              <div class="col-lg-4 col-sm-12 col-xs-12">
+                <h4>Datos del vehiculo</h4> <br>
+                <p>Marca: {{entity.vehiculo?.marca}} </p>
+                <p>Modelo: {{entity.vehiculo?.modelo}} </p>
+                <p>Año: {{entity.vehiculo?.ano}} </p>
+                <p>Version: {{entity.vehiculo?.version}} </p>
+              </div>
+              <div class="col-lg-4 col-sm-12 col-xs-12">
+                <h4>Cobertura</h4> <br>
+                <p>{{entity.cobertura?.titulo}} </p>
+                <p>{{entity.cobertura?.texto}} </p>
+                <p>{{entity.cobertura?.descripcion}} </p>
+                <p>Número: {{entity.cobertura?.numero}} </p>
+                <p>Producto: {{entity.cobertura?.producto}} </p>
+                <p>Código Producto: {{entity.cobertura?.codigoProducto}} </p>
+                <p>Costo: <span *ngIf="entity.cobertura?.costo">${{entity.cobertura?.costo}}</span></p>
+                <p>Franquicia: <span *ngIf="entity.cobertura?.franquicia">${{entity.cobertura?.franquicia}}</span></p>
+                <p>Puntaje: {{entity.cobertura?.puntaje}} </p>
+              </div>
+            </div> 
+          </div>
+        </div>
+      </div>  
+      <div>
+        <div class="row col-lg-12 pt1 pt3Mb">
+          <div class="col-lg-1 col-sm-12">
+            <button mat-button matStepperPrevious class="back-button w100Mb">Volver</button>
+          </div>
+          <div class="col-lg-1 col-sm-12 pt1Mb">
+            <button mat-button (click)="goStep1(0)" class="edit-button w100Mb">Modificar</button>
+          </div>
+          <div class="col-lg-1 col-sm-12 pt1Mb">
+            <button mat-button (click)="enviar()" class="send-button w100Mb">Enviar</button>
+          </div>
+        </div> 
+
+        <!--
+        <button mat-button (click)="stepper.reset()">Modificar</button>
+        -->
+      </div>
+    </mat-step>
+  </mat-stepper>
+  <!--  
+  </mat-vertical-stepper>
+  -->
+
+  
+  <!-- Copyright 2021 Google LLC. All Rights Reserved.
+      Use of this source code is governed by an MIT-style license that
+      can be found in the LICENSE file at http://angular.io/license -->
